@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+		<link rel="dns-prefetch" href="//www.googletagservices.com" />
+		<link rel="dns-prefetch" href="//www.googletagmanager.com" />
+		<link rel="dns-prefetch" href="//www.google-analytics.com" />
+		<link rel="canonical" href="https://protractor.codethoi.com/" />
+        <title>Thước đo góc thực tế Online - Protractor Online</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content="Đây là một thước đo trực tuyến trong suốt,cũng giúp bạn đo góc trong một bức ảnh, bạn có thể dễ dàng đo góc của bất kỳ vật nào xung quanh bạn,chụp ảnh và tải nó lên, sau đó kéo điểm giữa của thước đo góc tới đỉnh của góc.">
+		<meta NAME="keywords" CONTENT="Thước đo góc thực tế Online, thuoc do goc, Protractor Online, Protractor">
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Thước đo góc thực tế Online - Protractor Online" />
+		<link rel="apple-touch-icon" sizes="180x180" href="https://codethoi.com/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="https://codethoi.com/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="https://codethoi.com/favicon-16x16.png">
+      
+        <link rel="stylesheet" href="assets/css/style.css">
+        <script type="text/javascript">
+			var img1 = new Image();
+        </script>
+        <script type="text/javascript" src="assets/js/canvas.js"></script>
+    </head>
+    <body>
+        <div class="divContainer">
+            <div class="divRight"></div>
+            <div class="divLeft">
+                <h1 class="h1_title">Thước đo góc thực tế Online</h1>
+                <div>
+                    <div id="divCanvas" style="position: relative;">
+                        <canvas id="myCanvas2" width="500" height="350"></canvas>
+                        <canvas id="myCanvas" width="500" height="350"></canvas>
+                    </div>
+                </div>
+                <div id="divPanel">
+                    <div id="divPanel1">
+                       Đường dẫn hình nền : <input type="text" name="pic" id="pic" placeholder="https://codethoi.com/hinhanh.jpg" style="width: 350px;" onchange="onChangePIC()" />
+					   
+					   <input type="button" onclick="background_switch();" value="Ẩn / Hiện nền">
+                    </div>
+
+                    <script type="text/javascript">
+						function onChangePIC() {
+							var picValue = document.getElementById("pic").value;
+							if (picValue) {
+								img1.src = picValue;
+								
+								loadBackground();
+							} else {
+								img1.src = '';
+							}
+						}
+						
+                        function background_switch() {
+                            if (c2.style.display == "none") {
+                                c2.style.display = "block";
+                            } else {
+                                c2.style.display = "none";
+                            }
+                        }     
+                    </script>
+
+                    <div>
+                        <div id="divPanel3">
+                            Thước đo màu :
+                            <select id="color" onchange="change_color();">
+                                <option value="black">Đen</option>
+                                <option value="white">trắng</option>
+                                <option value="lime">Màu xanh chanh</option>
+                                <option value="cyan">Lục lam</option>
+                                <option value="yellow">Màu vàng</option>
+                                <option value="pink">Hồng</option>
+                                <option value="red">Màu đỏ</option>
+                                <option value="blue">Màu xanh da trời</option>
+                                <option value="green">màu xanh lá</option>
+                                <option value="purple">Màu tím</option>
+                            </select>
+                            <br />
+                            Bán kính thước đo :
+                            <input type="button" value="&uarr;" onclick="radius_add_subtract(1);" />
+                            <input id="radius" value="" title="radius" type="number" onchange="change_radius();" />
+                            <input type="button" value="&darr;" onclick="radius_add_subtract(-1);" />
+
+                            <br />
+                            Di chuyển thước đo :
+                            <input type="button" value="&larr;" onclick="MoveProtractor(cpX-1,cpY);" />
+                            <input id="cpX" value="" title="x" type="number" onchange="cpXChange();" />
+                            <input type="button" value="&rarr;" onclick="MoveProtractor(cpX+1,cpY);" />
+
+                            <input type="button" value="&uarr;" onclick="MoveProtractor(cpX,cpY-1);" />
+                            <input id="cpY" value="" title="y" type="number" onchange="cpYChange();" />
+                            <input type="button" value="&darr;" onclick="MoveProtractor(cpX,cpY+1);" />
+                        </div>
+                        <div id="divPanel4"></div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    var ocpX = document.getElementById("cpX");
+                    var ocpY = document.getElementById("cpY");
+                    var oradius = document.getElementById("radius");
+                    function MoveProtractor(x, y) {
+                        cpX = x;
+                        cpY = y;
+                        draw_protractor();
+                        aps.setCenterPoint(cpX, cpY);
+                        aps.redraw();
+                        ocpX.value = cpX;
+                        ocpY.value = cpY;
+                    }
+                    function cpXChange() {
+                        if (ocpX.value != "" && !isNaN(ocpX.value)) {
+                            cpX = parseInt(ocpX.value);
+                            draw_protractor();
+                            aps.setCenterPoint(cpX, cpY);
+                            aps.redraw();
+                        }
+                    }
+                    function cpYChange() {
+                        if (ocpY.value != "" && !isNaN(ocpY.value)) {
+                            cpY = parseInt(ocpY.value);
+                            draw_protractor();
+                            aps.setCenterPoint(cpX, cpY);
+                            aps.redraw();
+                        }
+                    }
+                    function change_radius() {
+                        if (oradius.value != "" && !isNaN(oradius.value)) {
+                            set_radius(parseInt(oradius.value));
+                            draw_protractor();
+                            aps.setCenterPoint(cpX, cpY);
+                            aps.redraw();
+                        }
+                    }
+                    function radius_add_subtract(v) {
+                        set_radius(radius + v);
+                        oradius.value = radius;
+                        draw_protractor();
+                        aps.redraw();
+                    }
+                </script>
+
+                <script type="text/javascript">
+                    //handle canvas
+                    var c = document.getElementById("myCanvas");
+                    var ctx = c.getContext("2d");
+                    var c2 = document.getElementById("myCanvas2");
+                    var ctx2 = c2.getContext("2d");
+
+                    function ResetCanvasSize() {
+                        if (screen.width < 500) {
+                            c.width = screen.width;
+                            c.height = c.width / 2 + 50;
+                        } else if (screen.width <= 800) {
+                            c.width = screen.width;
+                            c.height = c.width / 2 + 20;
+                        } else if (screen.width <= 1024) {
+                            c.width = screen.width - 320;
+                            c.height = c.width / 2;
+                        } else {
+                            c.width = screen.width - 500;
+                            c.height = c.width / 2;
+                        }
+
+                        c2.width = c.width;
+                        c2.height = c.height;
+                        document.getElementById("divCanvas").style.height = c.height + "px";
+                    }
+                    ResetCanvasSize();
+
+                    window.onresize = function () {
+                        ResetCanvasSize();
+                        draw_protractor();
+                        loadBackground();
+                    };
+
+                    var cpX = c.width / 2;
+                    var cpY = c.height - 30;
+                    ocpX.value = cpX;
+                    ocpY.value = cpY;
+                    function set_radius(v) {
+                        radius = v;
+                        radius_1st = v * 0.13;
+                        radius_2nd = v * 0.7;
+                        radius_3rd = v * 0.82;
+                        if (oradius.value != radius) {
+                            oradius.value = radius;
+                        }
+                    }
+                    set_radius(Math.round(c.width / 2 - c.width / 16));
+
+                    var ocolor = document.getElementById("color");
+
+                    function draw_protractor() {
+                        ctx.clearRect(0, 0, c.width, c.height);
+                        var color = ocolor.value;
+                        ctx.beginPath();
+                        ctx.textBaseline = "alphabetic";
+                        ctx.lineWidth = 1;
+                        ctx.arc(cpX, cpY, radius, 1 * Math.PI, 0);
+                        ctx.moveTo(cpX - radius_3rd, cpY);
+                        ctx.arc(cpX, cpY, radius_3rd, 1 * Math.PI, 0);
+                        ctx.moveTo(cpX - radius_2nd, cpY);
+                        ctx.arc(cpX, cpY, radius_2nd, 1 * Math.PI, 0);
+                        ctx.moveTo(cpX - radius_1st, cpY);
+                        ctx.arc(cpX, cpY, radius_1st, 1 * Math.PI, 0);
+                        ctx.moveTo(cpX - radius, cpY);
+                        ctx.lineTo(cpX + radius, cpY);
+                        ctx.strokeStyle = color;
+                        ctx.stroke();
+
+                        ctx.beginPath();
+                        for (i = 1; i < 180; i++) {
+                            degree = 180 - i;
+                            x = cpX + radius * Math.cos((-degree * Math.PI) / 180);
+                            y = cpY + radius * Math.sin((-degree * Math.PI) / 180);
+                            if (degree % 90 == 0) {
+                                rl = 0;
+                            } else if (degree % 10 == 0) {
+                                rl = 0.13;
+                            } else if (degree % 5 == 0) {
+                                rl = 0.91;
+                            } else {
+                                rl = 0.94;
+                            }
+
+                            x1 = cpX + radius * rl * Math.cos((-degree * Math.PI) / 180);
+                            y1 = cpY + radius * rl * Math.sin((-degree * Math.PI) / 180);
+                            ctx.moveTo(x, y);
+                            ctx.lineTo(x1, y1);
+                        }
+                        ctx.strokeStyle = color; //'#000000';
+                        ctx.stroke();
+
+                        ctx.textAlign = "center";
+                        ctx.fillStyle = color; //"black";
+            
+                        for (i = 0; i <= 180; i += 10) {
+                            ctx.save();
+                            degree = 180 - i;
+                            rl = 0.86;
+                            x1 = cpX + radius * rl * Math.cos((-degree * Math.PI) / 180);
+                            y1 = cpY + radius * rl * Math.sin((-degree * Math.PI) / 180);
+
+                            ctx.translate(x1, y1);
+                            ctx.rotate((-(90 - i) * Math.PI) / 180);
+                            fontsize = Math.round((25 / 380) * radius);
+                            ctx.clearRect(-10, -fontsize + 2, fontsize + 2, fontsize + 2);
+                            ctx.font = fontsize.toString() + "px Arial";
+                            ctx.fillText(i, 0, 0);
+                            ctx.restore();
+                        }
+
+                        switch (color) {
+                            case "white":
+                                color2 = "yellow";
+                                break;
+                            case "red":
+                                color2 = "purple";
+                                break;
+                            case "cyan":
+                                color2 = "pink";
+                                break;
+                            case "blue":
+                                color2 = "black";
+                                break;
+                            case "green":
+                                color2 = "maroon";
+                                break;
+                            case "lime":
+                                color2 = "cyan";
+                                break;
+                            case "purple":
+                                color2 = "blue";
+                                break;
+                            case "yellow":
+                                color2 = "magenta";
+                                break;
+                            case "pink":
+                                color2 = "#d8ffc4";
+                                break;
+                            default:
+                                color2 = "blue";
+                        }
+
+                        ctx.fillStyle = color2;
+                        for (i = 0; i <= 180; i += 10) {
+                            ctx.save();
+                            degree = i;
+                            rl = 0.73;
+                            x1 = cpX + radius * rl * Math.cos((-degree * Math.PI) / 180);
+                            y1 = cpY + radius * rl * Math.sin((-degree * Math.PI) / 180);
+
+                            ctx.translate(x1, y1);
+                            ctx.rotate(((90 - i) * Math.PI) / 180);
+                            ctx.clearRect(-10, -fontsize + 2, fontsize + 2, fontsize + 2);
+                            fontsize = Math.round((23 / 380) * radius);
+                            ctx.font = fontsize.toString() + "px Arial";
+                            ctx.fillText(i, 0, 0);
+                            ctx.restore();
+                        }
+                    }
+
+                    function change_color() {
+                        draw_protractor();
+                        var color = ocolor.value;
+                        switch (color) {
+                            case "white":
+                                aps.line_color = "#5dff4f";
+                                break;
+                            case "red":
+                                aps.line_color = "#5dff4f";
+                                break;
+                            case "cyan":
+                                aps.line_color = "#f9f99d";
+                                break;
+                            case "blue":
+                                aps.line_color = "#ff4921";
+                                break;
+                            case "green":
+                                aps.line_color = "#ede900";
+                                break;
+                            case "lime":
+                                aps.line_color = "#ffdb4c";
+                                break;
+                            case "purple":
+                                aps.line_color = "#1dfc11";
+                                break;
+                            case "yellow":
+                                aps.line_color = "#4ecbfc";
+                                break;
+                            case "pink":
+                                aps.line_color = "#429aff";
+                                break;
+                            default:
+                                aps.line_color = "#ff6021";
+                        }
+                        aps.setCenterPoint(cpX, cpY);
+                        aps.redraw();
+                    }
+
+                    draw_protractor();
+
+                    c.highlight_1st_semicycle = false;
+                    function highlight_semicycle(bon) {
+                        if (c.highlight_1st_semicycle != bon) {
+                            if (c.highlight_1st_semicycle == false) {
+                                c.highlight_1st_semicycle = true;
+                                ctx.beginPath();
+                                ctx.arc(cpX, cpY, radius_1st, 1 * Math.PI, 0);
+                                ctx.fillStyle = "#FFC170";
+                                ctx.fill();
+                                ctx.moveTo(cpX, cpY);
+                                ctx.lineTo(cpX, cpY - radius_1st);
+                                ctx.moveTo(cpX - radius_1st, cpY);
+                                ctx.lineTo(cpX + radius_1st, cpY);
+                                ctx.stroke();
+                            } else {
+                                c.highlight_1st_semicycle = false;
+                                // to keep transparent, redraw everything
+                                draw_protractor();
+                                aps.setCenterPoint(cpX, cpY);
+                                aps.redraw();
+                            }
+                        }
+                    }
+
+                    //mouse into semicycle
+                    c.addEventListener("mousemove", function (e) {
+                        var mouse_x = e.offsetX;
+                        var mouse_y = e.offsetY;
+                        var r = radius_1st;
+
+                        if (c.dragging) {
+                            offsetX = c.drag_point.x - e.offsetX;
+                            offsetY = c.drag_point.y - e.offsetY;
+                            cpX = c.center_point.x - offsetX;
+                            cpY = c.center_point.y - offsetY;
+                            ocpX.value = cpX;
+                            ocpY.value = cpY;
+                            draw_protractor();
+                            aps.setCenterPoint(cpX, cpY);
+                            aps.redraw();
+                            return;
+                        } else if (aps.dragging) {
+                            offsetX = aps.drag_point.x - e.offsetX;
+                            offsetY = aps.drag_point.y - e.offsetY;
+                            aps.dragging_pin.x = aps.draggin_x - offsetX;
+                            aps.dragging_pin.y = aps.draggin_y - offsetY;
+                            draw_protractor();
+                            aps.setCenterPoint(cpX, cpY);
+                            aps.redraw();
+                            for (i = 0; i < aps.points.length; i++) {
+                                document.getElementById("ppX" + i).value = aps.points[i].x;
+                                document.getElementById("ppY" + i).value = aps.points[i].y;
+                            }
+                            return;
+                        }
+
+                        if (cpX - r - 10 < mouse_x && cpX + r + 10 > mouse_x && cpY > mouse_y && cpY - r - 10 < mouse_y) {
+
+                            var x = mouse_x - cpX;
+                            var y = mouse_y - cpY;
+                            var rad = Math.atan2(Math.abs(y), x);
+                            var degree = rad * (180 / Math.PI);
+                            var x1 = cpX + radius_1st * Math.cos((-degree * Math.PI) / 180);
+                            var y1 = cpY + radius_1st * Math.sin((-degree * Math.PI) / 180);
+                            var inSemicircle = false;
+                            if (mouse_x < cpX) {
+                                if (x1 < mouse_x && y1 < mouse_y) {
+                                    inSemicircle = true;
+                                }
+                            } else {
+                                if (x1 > mouse_x && y1 < mouse_y) {
+                                    inSemicircle = true;
+                                }
+                            }
+
+                            if (inSemicircle) {
+                                highlight_semicycle(true);
+                                c.style.cursor = "pointer";
+                            } else {
+                                highlight_semicycle(false);
+                                c.style.cursor = "default";
+                            }
+                        } else if (aps.get_pin(mouse_x, mouse_y) !== null) {
+                            //on the pin
+                            c.style.cursor = "pointer";
+                        } else if (mouse_y <= cpY) {
+                            var x = mouse_x - cpX;
+                            var y = mouse_y - cpY;
+                            var rad = Math.atan2(Math.abs(y), x);
+                            var degree = rad * (180 / Math.PI);
+                            var x1 = cpX + radius * Math.cos((-degree * Math.PI) / 180);
+                            var y1 = cpY + radius * Math.sin((-degree * Math.PI) / 180);
+
+                            var inRim = false;
+                            if (mouse_x < cpX) {
+                                //left side
+                                if (mouse_x < x1 && mouse_y < y1) {
+                                    inRim = true;
+                                }
+                            } else {
+                                //right side
+                                if (mouse_x > x1 && mouse_y < y1) {
+                                    inRim = true;
+                                }
+                            }
+                            if (inRim) {
+                                c.cursor_in_rim = true;
+                                if (aps.get_pin(mouse_x, mouse_y) !== null) {
+                                    c.style.cursor = "pointer";
+                                } else {
+                                    c.style.cursor = "crosshair";
+                                }
+                            } else {
+                                c.style.cursor = "default";
+                                c.cursor_in_rim = false;
+                            }
+                        } else {
+                            highlight_semicycle(false);
+                            c.style.cursor = "default";
+                        }
+                    });
+
+                    c.addEventListener("mousedown", function (e) {
+                        if (c.highlight_1st_semicycle) {
+                            c.dragging = true;
+                            c.style.cursor = "move";
+                            c.drag_point = { x: e.offsetX, y: e.offsetY };
+                            c.center_point = { x: cpX, y: cpY };
+                        } else if (aps.get_pin(e.offsetX, e.offsetY) !== null) {
+                            c.style.cursor = "move";
+                            aps.dragging = true;
+                            aps.dragging_pin = aps.get_pin(e.offsetX, e.offsetY);
+                            aps.draggin_x = aps.dragging_pin.x;
+                            aps.draggin_y = aps.dragging_pin.y;
+                            aps.drag_point = { x: e.offsetX, y: e.offsetY };
+                        } else if (c.cursor_in_rim) {
+                            aps.add(e.offsetX, e.offsetY);
+                            aps.draw_degrees();
+                            c.style.cursor = "pointer";
+                            refresh_panel4();
+                        }
+                    });
+
+                    c.addEventListener("mouseup", function (e) {
+                        if (c.dragging || aps.dragging) {
+                            c.dragging = false;
+                            aps.dragging = false;
+                            c.style.cursor = "default";
+                        }
+                    });
+
+                    c.addEventListener("dblclick", function (e) {
+                        c.dragging = false;
+                        aps.dragging = false;
+                        if (aps.get_pin(e.offsetX, e.offsetY) !== null) {
+                            aps.remove(aps.get_pin(e.offsetX, e.offsetY));
+                            draw_protractor();
+                            aps.setCenterPoint(cpX, cpY);
+                            aps.redraw();
+                            refresh_panel4();
+                        }
+                    });
+
+                    function refresh_panel4() {
+                        var sTmp = "";
+                        if (aps.points.length > 0) {
+                            for (i = 0; i < aps.points.length; i++) {
+                                pt = aps.points[i];
+                                sTmp +=
+                                    "<div><img src='assets/image/pushpin.gif' style='width:18px;vertical-align:middle' title='Đinh ghim'>" +
+                                    (i + 1) +
+                                    " <input type='button' value='&larr;' onclick='MovePP(" +
+                                    i +
+                                    ",-1,0);' title='Di chuyển chốt đẩy sang trái 1 pixel'>" +
+                                    " <input class='iptMovement' id='ppX" +
+                                    i +
+                                    "' value='" +
+                                    pt.x +
+                                    "' title='x' type='number' onchange='ppChange(" +
+                                    i +
+                                    ");' title='tọa độ đẩy x'>" +
+                                    " <input type='button' value='&rarr;' onclick='MovePP(" +
+                                    i +
+                                    ",+1,0);' title='Di chuyển chốt đẩy đúng 1 pixel'>" +
+                                    " <input type='button' value='&uarr;' onclick='MovePP(" +
+                                    i +
+                                    ",0,-1);' title='Di chuyển đinh ghim lên 1 pixel'>" +
+                                    " <input class='iptMovement' id='ppY" +
+                                    i +
+                                    "' value='" +
+                                    pt.y +
+                                    "' title='y' type='number' onchange='ppChange(" +
+                                    i +
+                                    ");' title='đinh ghim phối hợp y'>" +
+                                    " <input type='button' value='&darr;' onclick='MovePP(" +
+                                    i +
+                                    ",0,+1);' title='Di chuyển đinh ghim xuống 1 pixel'></div>";
+                            }
+                            document.getElementById("divPanel4").innerHTML = sTmp;
+                            document.getElementById("divPanel4").style.display = "block";
+                        } else {
+                            document.getElementById("divPanel4").style.display = "none";
+                        }
+                    }
+
+                    function MovePP(idx, x, y) {
+                        if (idx < 0 || idx >= aps.points.length) {
+                            return;
+                        }
+                        pt = aps.points[idx];
+                        pt.x += x;
+                        pt.y += y;
+                        draw_protractor();
+                        aps.redraw();
+                        document.getElementById("ppX" + idx).value = pt.x;
+                        document.getElementById("ppY" + idx).value = pt.y;
+                    }
+
+                    function ppChange(idx) {
+                        if (idx < 0 || idx >= aps.points.length) {
+                            return;
+                        }
+                        pt = aps.points[idx];
+                        pt.x = parseInt(document.getElementById("ppX" + idx).value);
+                        pt.y = parseInt(document.getElementById("ppY" + idx).value);
+                        console.log(pt);
+                        draw_protractor();
+                        aps.redraw();
+                    }
+
+                    var aps = new angle_points(c);
+                    aps.setCenterPoint(cpX, cpY);
+                    aps.line_color = "#ff6021";
+                    
+                    function loadBackground() {
+                        if (img1.src == "") {
+                            return;
+                        }
+                        try {
+                            rgb = getAverageRGB(img1);
+                            ctx.beginPath();
+                            ctx2.rect(0, 0, c2.width, c2.height);
+                            ctx2.fillStyle = "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
+                            ctx2.fill();
+                            ctx2.stroke();
+
+                            if (img1.width > c2.width || img1.height > c2.height) {
+                                w = img1.width;
+                                h = img1.height;
+                                if (w > c2.width) {
+                                    w = c2.width;
+                                    h = (h * c2.width) / img1.width;
+                                }
+                                if (h > c2.height) {
+                                    w = (w * c2.height) / h;
+                                    h = c2.height;
+                                }
+                                x = (c2.width - w) / 2;
+                                y = c2.height - h;
+                                ctx2.drawImage(img1, 0, 0, img1.width, img1.height, x, y, w, h);
+                            } else {
+                                x = (c2.width - img1.width) / 2;
+                                y = c2.height - img1.height;
+                                ctx2.drawImage(img1, x, y);
+                            }
+                        } catch (e) {
+                            alert(e.message);
+                        }
+                    }
+
+                    img1.onload = function () {
+                        loadBackground();
+                    };
+                </script>
+                
+				<br style="clear:both;line-height:1px;">
+                <p>
+                    Đây là một thước đo trực tuyến trong suốt, cũng giúp bạn đo góc trong một bức ảnh, bạn có thể dễ dàng đo góc của bất kỳ vật nào xung quanh bạn, chụp ảnh và tải nó lên, sau đó kéo điểm giữa của thước đo góc tới đỉnh của
+                    góc.
+                </p>
+
+                <h3>Làm thế nào để sử dụng thước đo trực tuyến này?</h3>
+                <ul>
+                    <li>Bạn có thể đo góc của bất kỳ đối tượng thực tế nào trực tiếp trên màn hình của bạn</li>
+                    <li>Nếu bạn muốn di chuyển thước đo góc, hãy kéo điểm giữa của nó.</li>
+                    <li>Nhấp vào cạnh bên ngoài của thước đo góc sẽ thêm một đinh ghim trên nó</li>
+                    <li>Đặt hai đinh ghim sẽ hiển thị độ của góc đó</li>
+                    <li>Nhấp đúp vào đinh ghim sẽ loại bỏ nó</li>
+                </ul>
+
+                <img src="assets/image/online_protractor.jpg" style="max-width: 100%;" title="Thước đo góc trên mạng" alt="Thước đo góc trên mạng" />
+
+                <p>
+                    Mỗi lần tôi muốn đo góc, tôi luôn không thể tìm được thước đo góc. May mắn thay, đây là một thước đo trực tuyến thuận tiện và thiết thực. Giờ đây, chúng ta có thể sử dụng máy tính xách tay, máy tính, máy tính bảng hoặc
+                    điện thoại thông minh để đo góc của mọi thứ, xung quanh chúng ta mọi lúc, mọi nơi.
+                </p>
+                <p>
+                    Nếu bạn muốn đo một cái gì đó nhỏ, chỉ cần đặt nó trên màn hình và đo trực tiếp; Nếu bạn muốn đo một cái gì đó lớn hơn, bạn có thể chụp ảnh và tải nó lên, sau đó di chuyển điểm trung tâm của thước đo góc để đo góc của
+                    nó.
+                </p>
+
+                <h3>Sử dụng máy ảnh hoặc hình ảnh để đo góc</h3>
+                <p>
+                    Bạn có thể chụp ảnh bất kỳ đối tượng nào bạn muốn đo, ví dụ: ô tô, đường, nhà, cầu thang hoặc núi, thước đo góc trong suốt Sau khi bạn tải lên hình ảnh, nó sẽ được hiển thị trong nền. sau đó, bạn có thể lái thước đo góc
+                    hoặc thêm đinh ghim để tìm ra mức độ của các góc, tải lên tệp chỉ chấp nhận tệp hình ảnh ở các định dạng jpg, jpeg, gif, png
+                </p>
+                <p>
+                    Trong bảng điều khiển, nếu màu nền gần với thước đo góc và không dễ để phân biệt, bạn có thể thay đổi màu của thước đo góc để nhìn rõ. Ngoài ra, bạn có thể di chuyển nó, thu nhỏ hoặc phóng to kích thước của thước đo góc
+                    theo nhu cầu của bạn.
+                </p>
+
+                <img src="assets/image/online_protractor_1.jpg" style="max-width: 100%;" title="Đo góc trên hình" alt="Đo góc trên hình" />
+
+                <h3>Góc và độ</h3>
+                <ul>
+                    <li>Các góc được đo bằng độ. Biểu tượng cho độ là một vòng tròn nhỏ °</li>
+                    <li>Vòng tròn đầy đủ là 360 ° (360 độ)</li>
+                    <li>Một nửa hình tròn hoặc một góc thẳng là 180 °</li>
+                    <li>Một nửa vòng tròn hoặc một góc vuông là 90 °</li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,184 @@
+@media all {
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+	}
+	#divInput {
+		border: 1px solid #cccccc;
+		margin: 10px 0px 0px 0px;
+		padding: 10px;
+		width: 450px;
+		background: #ffffcc;
+	}
+	#usoz,
+	#ukoz,
+	#ml {
+		width: 60px;
+	}
+	#divFormula {
+		background: #d1d4fa;
+		border-left: 2px solid #5441f1;
+		margin: 5px;
+		font-size: 14px;
+		padding: 5px 0px 5px 10px;
+		display: none;
+		width: 500px;
+	}
+	#divFormula ul {
+		padding-left: 20px;
+		margin: 0px;
+	}
+	#myCanvas {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		z-index: 1;
+	}
+	#myCanvas2 {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		z-index: 0;
+	}
+	#divCanvas {
+		width: 500px;
+		height: 250px;
+	}
+	#divPanel {
+		line-height: 1.8;
+	}
+	#divPanel2 {
+		display: none;
+	}
+	#divPanel3 {
+		border: solid 1px #000000;
+		padding: 2px;
+		width: 466px;
+		float: left;
+	}
+	#divPanel4 {
+		border: solid 1px #ffcc00;
+		padding: 2px;
+		width: 400px;
+		float: left;
+		margin-left: 5px;
+		display: none;
+	}
+	#cpX,
+	#cpY {
+		width: 50px;
+	}
+	#radius {
+		width: 50px;
+	}
+	#btnSBGP {
+		display: none;
+	}
+	.h1_title {
+		margin: 0px;
+		padding: 0px;
+		font-size: 35px;
+	}
+	.divContainer {
+		height: auto;
+		overflow: hidden;
+	}
+	.divRight {
+		width: 300px;
+		float: right;
+	}
+	.divLeft {
+		float: none;
+		width: auto;
+		overflow: hidden;
+	}
+	.formula {
+		background: #d1d4fa;
+		border-left: 2px solid #5441f1;
+		margin: 5px;
+		font-size: 14px;
+		padding: 5px 0px 5px 10px;
+		width: 450px;
+	}
+	.warning {
+		color: #cc0000;
+		font-size: 12px;
+	}
+	.iptMovement {
+		width: 50px;
+	}
+}
+
+@media only screen and (max-width: 1024px) {
+	#divPanel3 {
+		float: none;
+		width: 80%;
+	}
+	#divPanel4 {
+		float: none;
+		margin-left: 0px;
+		width: 80%;
+	}
+}
+
+@media only screen and (max-width: 950px) {
+	.divRight {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	body {
+		margin: 0px;
+		padding: 0px;
+	}
+	#divInput {
+		width: 100%;
+	}
+	#usoz,
+	#ukoz,
+	#ml {
+		width: 50px;
+	}
+	#divFormula {
+		width: 100%;
+	}
+	#myCanvas {
+	}
+	#cpX,
+	#cpY {
+		width: 40px;
+	}
+	#divPanel3 {
+		float: none;
+		width: 100%;
+	}
+	#divPanel4 {
+		float: none;
+		margin-left: 0px;
+		width: 100%;
+	}
+	.h1_title {
+		margin: 0px;
+		padding: 0px;
+		font-size: 18px;
+	}
+	.formula {
+		width: 100%;
+	}
+	.iptMovement {
+		width: 40px;
+	}
+}
+
+@media only screen and (max-width: 320px) {
+	#divPanel {
+		font-size: 14px;
+	}
+	#cpX,
+	#cpY {
+		width: 42px;
+	}
+	.hide320 {
+		display: none;
+	}
+}
